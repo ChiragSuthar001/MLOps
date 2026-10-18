@@ -1,4 +1,4 @@
-# Docker Lab 2 — Iris Classifier using Tensorflow (Docker)
+# Docker Lab 2 — Iris Classifier using Tensorflow
 
 This document walks you thought the changes and how to start up the project
 
