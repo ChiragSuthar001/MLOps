@@ -111,11 +111,11 @@ docker image list | grep my_wine_app
 
 ### Run the container with the built image
 ```bash
-docker run --rm -p <PORT>:443 my_wine_app
+docker run --rm -p <PORT>:3000 my_wine_app
 ```
 `<PORT>` - Put desired port to run the application on host system.
 
-e.g. `docker run --rm -p 8080:443 my_wine_app` will run the app on `localhost:8080`
+e.g. `docker run --rm -p 8080:3000 my_wine_app` will run the app on `localhost:8080`
 
 <details>
     <summary>
