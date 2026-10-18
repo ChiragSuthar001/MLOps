@@ -65,3 +65,119 @@ Used docker to multi-stage build to make a light weight final image with weights
 - **`Expose: 80`** exposes the port 80
 
 Used `.dockerignore` to exclude all the files and folders not necessary for the build and remove noise from rebuilds.
+
+## How to Run the Project with Docker
+
+All the commands needs to run in the directory (`Labs/Docker_Labs/Lab2`)
+
+### Prerequisites
+
+- Docker Deamon running
+
+### Get to the folder
+
+From the root of the repository:
+```bash
+pushd Labs/Docker_Labs/Lab2
+```
+
+### Build the image
+
+```bash
+docker build -t my_iris_app .
+```
+First build might take a few minutes.
+
+This will build the docker image named 'my_iris_app'. You can verify the image listed in the docker desktop or with the following command:
+```bash
+docker image list | grep my_iris_app
+```
+
+### Run the container with the built image
+```bash
+docker run --rm -p <PORT>:443 my_iris_app
+```
+`<PORT>` - Put desired port to run the application on host system.
+
+e.g. `docker run --rm -p 8080:443 my_iris_app` will run the app on `localhost:8080`
+
+<details>
+    <summary>
+        <b>OR</b>: If Background run is desired (typical for testing with `curl` / browser)
+    </summary>
+
+```bash
+docker run --rm -d --name iris -p 8080:8080 my_iris_app
+```
+</details>
+
+## Verify with cURL
+
+Assuming docker container is running on `8080`
+
+```bash
+curl -s http://localhost:8080/health
+curl -s http://localhost:8080/
+curl -s "http://localhost:8080/predict?sepal_length=5.1&sepal_width=3.5&petal_length=1.4&petal_width=0.2"
+curl -s "http://localhost:8080/predict_knn?sepal_length=5.1&sepal_width=3.5&petal_length=1.4&petal_width=0.2"
+```
+
+JSON **POST** example:
+
+```bash
+curl -s -X POST http://localhost:8080/predict \
+  -H "Content-Type: application/json" \
+  -d '{"sepal_length":5.1,"sepal_width":3.5,"petal_length":1.4,"petal_width":0.2}'
+```
+
+### Verify in the browser
+
+- [http://127.0.0.1:8080/](http://127.0.0.1:8080/) — welcome message  
+- [http://127.0.0.1:8080/health](http://127.0.0.1:8080/health) — health JSON  
+- [http://127.0.0.1:8080/predict](http://127.0.0.1:8080/predict) - Predict HTML page
+
+</br>
+
+<details>
+    <summary>
+    <h1 style="display: inline;">Optional: Docker Compose</h1>
+    </summary>
+
+Make sure you are in the directory - `Labs/Docker_Labs/Lab2`
+
+```bash
+docker compose up
+```
+
+when done, the compose can be turned down with:
+```bash
+docker compose down
+```
+
+</details>
+
+<br/>
+<br/>
+
+# Screenshots
+
+### Docker Build Success
+
+![Docker Build Success Screenshot image](screenshots/docker-build-complete.png)
+
+### cURL test with JSON
+
+![cURL test with JSON payload](screenshots/curl-with-json.png)
+
+
+### cURL test with arguments
+
+![cURL test with arguments and static requests](screenshots/curl-test.png)
+
+### Browser Test with Webpage
+
+![Webapp UI Running successfully](screenshots/webpage-loading-app.png)
+
+### Browser prediction test
+
+![Browser webapp working with prediction result shown](screenshots/webpage-working-prediction.png)

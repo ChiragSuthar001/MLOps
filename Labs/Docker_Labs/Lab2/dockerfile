@@ -26,7 +26,9 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 COPY src/templates /app/templates
 COPY src/statics /app/statics
 
-EXPOSE 80
+ENV PORT=443
+
+EXPOSE 443
 # Docker "exposes" port 80 because it is the standard, well-known port for the HTTP (web) protocol
 
 CMD ["python", "main.py"]

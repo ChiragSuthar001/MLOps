@@ -12,7 +12,9 @@ services:
     command: >
       sh -c "pip install -r requirements.txt &&
              python src/model_training.py &&
-             cp my_model.keras /exchange/my_model.keras"
+             cp my_nn_iris_model.keras /exchange/my_model.keras" &&
+             cp iris_encoder.pkl /exchange/iris_encoder.pkl &&
+             cp iris_scaler.pkl /exchange/iris_scaler.pkl
 
   # Service 2: Serve the model
   serving:
@@ -20,7 +22,7 @@ services:
     container_name: ml_serving
     working_dir: /app
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - ./src:/app/src
       - ./requirements.txt:/app/requirements.txt
@@ -33,6 +35,8 @@ services:
     # Copy result FROM shared folder -> Run server
     command: >
       sh -c "pip install --trusted-host pypi.python.org -r requirements.txt &&
+             cp /exchange/iris_encoder.pkl ./iris_encoder.pkl &&
+             cp /exchange/iris_scaler.pkl ./iris_scaler.pkl &&
              cp /exchange/my_model.keras ./my_model.keras &&
              python src/main.py"
 
