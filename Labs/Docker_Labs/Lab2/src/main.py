@@ -12,20 +12,30 @@ model  = None
 encoder = None
 scaler = None
 
-_inputs = ('sepal_length', 'sepal_width', 'petal_length', 'petal_width')
+_inputs = (
+    'alcohol', 'malic_acid', 'ash', 'alcalinity_of_ash', 'magnesium',
+    'total_phenols', 'flavanoids', 'nonflavanoid_phenols',
+    'proanthocyanins', 'color_intensity', 'hue',
+    'od280_od315_of_diluted_wines', 'proline'
+)
+
+_outputs = {
+    'class_0': 'Barolo',
+    'class_1': 'Grignolino',
+    'class_2': 'Barbera'
+}
 
 def _getPrediction(data):
-    sepal_length = float(data['sepal_length'])
-    sepal_width = float(data['sepal_width'])
-    petal_length = float(data['petal_length'])
-    petal_width = float(data['petal_width'])
+    feature_values = [float(data[name]) for name in _inputs]
 
     # Perform the prediction
-    input_data = np.array([sepal_length, sepal_width, petal_length, petal_width])[np.newaxis, ]
+    input_data = np.array(feature_values)[np.newaxis, ]
 
-    print("====== INPUT DATA ======")
-    print(input_data)
-    print("========================")
+    debug = os.getenv('DEBUG', 'False').lower() in ('true', 't')
+    if debug:
+        print("====== INPUT DATA ======")
+        print(input_data)
+        print("========================")
 
     input_data_scaled = scaler.transform(input_data)
 
@@ -36,7 +46,7 @@ def _getPrediction(data):
 
     predicted_class = encoder.inverse_transform(predicted_classes_onehot)
 
-    return jsonify({"predicted_class": predicted_class[0][0]})
+    return jsonify({"predicted_class": _outputs[predicted_class[0][0]]})
 
 @app.route('/')
 def home():

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neural Iris | AI Classifier</title>
+    <title>Wine Classifier | AI Prediction</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -42,26 +42,12 @@
             animation: float 10s infinite alternate;
         }
 
-        body::after {
-            content: '';
-            position: absolute;
-            bottom: -10%;
-            right: -10%;
-            width: 40%;
-            height: 40%;
-            background: radial-gradient(circle, var(--primary), transparent 70%);
-            opacity: 0.2;
-            filter: blur(80px);
-            z-index: -1;
-            animation: float 10s infinite alternate-reverse;
-        }
-
         .container {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
             width: 90%;
-            max-width: 450px;
+            max-width: 1100px;
             position: relative;
         }
 
@@ -92,6 +78,17 @@
         .input-group {
             margin-bottom: 1.5rem;
             position: relative;
+        }
+
+        .input-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0 1.25rem;
+        }
+
+        .input-grid .input-group {
+            flex: 0 0 calc((100% - 2.5rem) / 3);
+            min-width: 0;
         }
 
         label {
@@ -125,7 +122,7 @@
         }
 
         button.submit-btn {
-            width: 100%;
+            flex: 1;
             padding: 16px;
             background: linear-gradient(135deg, var(--secondary), var(--primary));
             border: none;
@@ -139,6 +136,39 @@
             margin-top: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+        }
+
+        .action-row {
+            display: flex;
+            align-items: stretch;
+            gap: 20px;
+            margin-top: 1rem;
+        }
+
+        .random-btn {
+            flex: 0 0 10%;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            background: rgba(0, 242, 255, 0.08);
+            cursor: pointer;
+        }
+
+        .random-btn:hover {
+            background: rgba(0, 242, 255, 0.18);
+        }
+
+        .random-btn svg {
+            width: 34px;
+            height: 29px;
+        }
+
+        .action-row .submit-btn {
+            margin-top: 0;
         }
 
         button.submit-btn:hover {
@@ -212,6 +242,18 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        @media (max-width: 760px) {
+            .input-grid .input-group {
+                flex-basis: calc((100% - 1.25rem) / 2);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .input-grid .input-group {
+                flex-basis: 100%;
+            }
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -219,51 +261,74 @@
 
     <div class="container">
         <div class="glass-card">
-            <h1>NEURAL IRIS</h1>
+            <h1>WINE CLASSIFIER</h1>
             
             <form id="predictionForm">
-                <div class="input-group">
-                    <label for="sepal_length">Sepal Length</label>
-                    <input type="number" id="sepal_length" step="0.01" placeholder="0.00" required>
+                <div class="input-grid">
+                    <div class="input-group"><label for="alcohol">Alcohol</label><input type="number" id="alcohol" step="any" required></div>
+                    <div class="input-group"><label for="malic_acid">Malic acid</label><input type="number" id="malic_acid" step="any" required></div>
+                    <div class="input-group"><label for="ash">Ash</label><input type="number" id="ash" step="any" required></div>
+                    <div class="input-group"><label for="alcalinity_of_ash">Alcalinity of ash</label><input type="number" id="alcalinity_of_ash" step="any" required></div>
+                    <div class="input-group"><label for="magnesium">Magnesium</label><input type="number" id="magnesium" step="any" required></div>
+                    <div class="input-group"><label for="total_phenols">Total phenols</label><input type="number" id="total_phenols" step="any" required></div>
+                    <div class="input-group"><label for="flavanoids">Flavanoids</label><input type="number" id="flavanoids" step="any" required></div>
+                    <div class="input-group"><label for="nonflavanoid_phenols">Nonflavanoid phenols</label><input type="number" id="nonflavanoid_phenols" step="any" required></div>
+                    <div class="input-group"><label for="proanthocyanins">Proanthocyanins</label><input type="number" id="proanthocyanins" step="any" required></div>
+                    <div class="input-group"><label for="color_intensity">Color intensity</label><input type="number" id="color_intensity" step="any" required></div>
+                    <div class="input-group"><label for="hue">Hue</label><input type="number" id="hue" step="any" required></div>
+                    <div class="input-group"><label for="od280_od315_of_diluted_wines">OD280/OD315 diluted wines</label><input type="number" id="od280_od315_of_diluted_wines" step="any" required></div>
+                    <div class="input-group"><label for="proline">Proline</label><input type="number" id="proline" step="any" required></div>
                 </div>
 
-                <div class="input-group">
-                    <label for="sepal_width">Sepal Width</label>
-                    <input type="number" id="sepal_width" step="0.01" placeholder="0.00" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="petal_length">Petal Length</label>
-                    <input type="number" id="petal_length" step="0.01" placeholder="0.00" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="petal_width">Petal Width</label>
-                    <input type="number" id="petal_width" step="0.01" placeholder="0.00" required>
-                </div>
-
+                <div class="action-row">
+                <button type="button" id="randomButton" class="random-btn" title="Fill with a random wine sample" aria-label="Fill with a random wine sample">
+                    <svg viewBox="0 0 24 24" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="0 5 7 5 17 20 25 20" />
+                        <polyline points="0 20 7 20 17 5 25 5" />
+                        <polyline points="23 2 25 5 23 8" />
+                        <polyline points="23 17 25 20 23 23" />
+                    </svg>
+                </button>
                 <button type="submit" class="submit-btn">
                     <span id="btnText">ANALYZE</span>
                     <div class="spinner" id="btnSpinner"></div>
                 </button>
+                </div>
             </form>
         </div>
 
         <div id="resultArea" class="glass-card result-container">
-            <div class="prediction-badge">CONFIDENCE: HIGH</div>
+            <div class="prediction-badge">PREDICTED CULTIVAR</div>
             <h2 id="predictedClass" style="margin: 10px 0; color: #fff; font-family: 'Orbitron', sans-serif;"></h2>
-            
-            <div class="flower-card">
-                <img src="" id="flowerImage" class="flower-image" alt="Iris Prediction"
-                data-setosa="{{ url_for('static', filename='setosa.jpeg') }}"
-                data-versicolor="{{ url_for('static', filename='versicolor.jpeg') }}"
-                data-virginica="{{ url_for('static', filename='virginica.jpeg') }}" />
-            </div>
         </div>
     </div>
 
     <script>
         $(document).ready(function() {
+            const featureRanges = {
+                alcohol: [11, 14.8, 2],
+                malic_acid: [0.7, 5.8, 2],
+                ash: [1.3, 3.2, 2],
+                alcalinity_of_ash: [10.6, 30, 1],
+                magnesium: [70, 162, 0],
+                total_phenols: [0.9, 3.9, 2],
+                flavanoids: [0.3, 5.1, 2],
+                nonflavanoid_phenols: [0.1, 0.7, 2],
+                proanthocyanins: [0.4, 3.6, 2],
+                color_intensity: [1.2, 13, 2],
+                hue: [0.4, 1.8, 2],
+                od280_od315_of_diluted_wines: [1.2, 4.2, 2],
+                proline: [278, 1680, 0]
+            };
+
+            $('#randomButton').on('click', function() {
+                Object.entries(featureRanges).forEach(function([field, range]) {
+                    const [minimum, maximum, decimals] = range;
+                    const value = minimum + Math.random() * (maximum - minimum);
+                    $('#' + field).val(value.toFixed(decimals));
+                });
+            });
+
             $('#predictionForm').on('submit', function(event) {
                 event.preventDefault(); 
                 
@@ -276,41 +341,22 @@
                 $spinner.show();
                 $btn.css('opacity', '0.7');
 
-                var formData = {
-                    'sepal_length': $('#sepal_length').val(),
-                    'sepal_width': $('#sepal_width').val(),
-                    'petal_length': $('#petal_length').val(),
-                    'petal_width': $('#petal_width').val()
-                };
+                var formData = {};
+                $('#predictionForm input').each(function() {
+                    formData[this.id] = this.value;
+                });
 
                 $.ajax({
                     type: 'POST',
                     url: '/predict',
-                    data: formData,
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
                     dataType: 'json',
-                    encode: true
                 }).done(function(data) {
                     
                     // Update Text
                     $('#predictedClass').text(data.predicted_class.toUpperCase());
                     
-                    // Update Image
-                    var imageUrl = '';
-                    switch (data.predicted_class) {
-                        case 'setosa':
-                            imageUrl = $('#flowerImage').data('setosa');
-                            break;
-                        case 'versicolor':
-                            imageUrl = $('#flowerImage').data('versicolor');
-                            break;
-                        case 'virginica':
-                            imageUrl = $('#flowerImage').data('virginica');
-                            break;
-                    }
-                    console.log("Image URL: ", imageUrl);
-
-                    $('#flowerImage').attr('src', imageUrl);
-
                     // Show Result with animation
                     $('#resultArea').addClass('active');
 
