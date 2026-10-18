@@ -65,7 +65,9 @@ def predict():
                 return jsonify({"error": "Request body must contain prediction inputs."}), 400
             return _getPrediction(data)
         except Exception as e:
-            return jsonify({"error": str(e)}), 400
+            if os.getenv('DEBUG', 'False').lower() in ('true', 't'):
+                return jsonify({"error": str(e)}), 400
+            return jsonify({"error": "An error occurred during prediction."}), 400
     elif request.method == 'GET':
         if (not all(i in request.args for i in _inputs)):
             return render_template('predict.html')

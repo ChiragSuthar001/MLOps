@@ -33,9 +33,9 @@ services:
       model-training:
         condition: service_completed_successfully
     environment:
-      - ENV FLASK_ENV=production
-      - ENV FLASK_DEBUG=0
-      - ENV PORT=3000
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+      - PORT=3000
     # Copy result FROM shared folder -> Run server
     command: >
       sh -c "pip install --trusted-host pypi.python.org -r requirements.txt &&
