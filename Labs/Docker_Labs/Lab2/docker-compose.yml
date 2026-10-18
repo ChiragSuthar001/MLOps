@@ -22,7 +22,7 @@ services:
     container_name: ml_serving
     working_dir: /app
     ports:
-      - "443:443"
+      - "8080:3000"
     volumes:
       - ./src:/app/src
       - ./requirements.txt:/app/requirements.txt
