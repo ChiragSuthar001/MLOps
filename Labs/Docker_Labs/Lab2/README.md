@@ -53,7 +53,7 @@ The first stage of the `dockerfile` installs the dependencies and runs
 `model_training.py` automatically. Build the image from the project root:
 
 ```bash
-docker build -f dockerfile -t my_wine_app .
+docker build -t my_wine_app .
 ```
 
 The generated model, encoder, and scaler are copied into the serving stage of the image, so no separate training command is required before starting the container, and the model works out of the box for the final container image.
@@ -166,8 +166,9 @@ docker compose up
 
 when done, the compose can be turned down with:
 ```bash
-docker compose down
+docker compose down -v
 ```
+remember to include the -v to remove all old `model_exchange` volume.
 
 </details>
 
