@@ -1,5 +1,5 @@
 # Stage 1: Build and Train the Model
-FROM python:3.10 AS model_training
+FROM python:3.13 AS model_training
 
 WORKDIR /app
 
@@ -11,11 +11,13 @@ RUN python model_training.py
 
 
 # Stage 2: Serve Predictions
-FROM python:3.10 AS serving
+FROM python:3.13 AS serving
 
 WORKDIR /app
 
-COPY --from=model_training /app/my_model.keras /app/
+COPY --from=model_training /app/my_nn_iris_model.keras /app/
+COPY --from=model_training /app/iris_encoder.pkl /app/
+COPY --from=model_training /app/iris_scaler.pkl /app/
 COPY src/main.py /app/
 COPY requirements.txt /app/
 
