@@ -18,13 +18,24 @@ I am saving three things at the end of the model training
 
 From the project root, install the dependencies and run the training script:
 
-I am using `uv` for python env
+I am using `uv` for python env. The code below creates a seperate python environment with python version 3.13.
 
 ```bash
 uv venv --python=3.13
 source .venv/bin/activate
-uv python pip install -r requirements.txt
-uv run src/model_training.py
+uv pip install -r requirements.txt
+```
+
+We then use uv to train the model using
+
+```bash
+uv run python src/model_training.py
+```
+
+After training the model we run the model using
+
+```bash
+uv run python src/main.py
 ```
 
 The script evaluates the model on the test set and writes these files to the project
