@@ -93,4 +93,4 @@ if __name__ == "__main__":
     scaler = joblib.load(scaler_file)
     print("Models and preprocessors loaded successfully.")
 
-    app.run(debug=True, host='0.0.0.0', port=os.getenv('PORT', 3000))
+    app.run(host='0.0.0.0', port=os.getenv('PORT', 3000))

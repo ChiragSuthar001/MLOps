@@ -46,7 +46,7 @@ if __name__ == '__main__':
     )
 
     print("Starting training of the neural network model...")
-    model.fit(X_train_scaled, y_train_encoded, epochs=100, batch_size=8, validation_split=0.1, verbose=1)
+    model.fit(X_train_scaled, y_train_encoded, epochs=50, batch_size=8, validation_split=0.1, verbose=1)
 
     # 6. Evaluate accuracy on unseen test data
     loss, accuracy = model.evaluate(X_test_scaled, y_test_encoded, verbose=0)

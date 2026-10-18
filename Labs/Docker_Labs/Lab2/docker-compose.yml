@@ -1,7 +1,7 @@
 services:
   # Service 1: Train the model
   model-training:
-    image: python:3.10-slim
+    image: python:3.13-slim
     container_name: ml_trainer
     working_dir: /app
     volumes:
@@ -12,13 +12,13 @@ services:
     command: >
       sh -c "pip install -r requirements.txt &&
              python src/model_training.py &&
-             cp my_nn_wine_model.keras /exchange/my_model.keras" &&
+             cp my_nn_wine_model.keras /exchange/my_model.keras &&
              cp wine_encoder.pkl /exchange/wine_encoder.pkl &&
-             cp wine_scaler.pkl /exchange/wine_scaler.pkl
+             cp wine_scaler.pkl /exchange/wine_scaler.pkl"
 
   # Service 2: Serve the model
   serving:
-    image: python:3.10-slim
+    image: python:3.13-slim
     container_name: ml_serving
     working_dir: /app
     ports:
@@ -32,12 +32,16 @@ services:
     depends_on:
       model-training:
         condition: service_completed_successfully
+    environment:
+      - ENV FLASK_ENV=production
+      - ENV FLASK_DEBUG=0
+      - ENV PORT=3000
     # Copy result FROM shared folder -> Run server
     command: >
       sh -c "pip install --trusted-host pypi.python.org -r requirements.txt &&
              cp /exchange/wine_encoder.pkl ./wine_encoder.pkl &&
              cp /exchange/wine_scaler.pkl ./wine_scaler.pkl &&
-             cp /exchange/my_model.keras ./my_model.keras &&
+             cp /exchange/my_model.keras ./my_nn_wine_model.keras &&
              python src/main.py"
 
 volumes:

@@ -27,6 +27,8 @@ COPY src/templates /app/templates
 COPY src/statics /app/statics
 
 ENV PORT=3000
+ENV FLASK_ENV=production
+ENV FLASK_DEBUG=0
 
 EXPOSE 3000
 # Docker "exposes" port 80 because it is the standard, well-known port for the HTTP (web) protocol

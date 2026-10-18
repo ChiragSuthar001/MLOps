@@ -134,8 +134,7 @@ Assuming docker container is running on `8080`
 ```bash
 curl -s http://localhost:8080/health
 curl -s http://localhost:8080/
-curl -s "http://localhost:8080/predict?sepal_length=5.1&sepal_width=3.5&petal_length=1.4&petal_width=0.2"
-curl -s "http://localhost:8080/predict_knn?sepal_length=5.1&sepal_width=3.5&petal_length=1.4&petal_width=0.2"
+curl -s "http://localhost:8080/predict?alcohol=13.20&malic_acid=1.78&ash=2.14&alcalinity_of_ash=11.2&magnesium=100&total_phenols=2.65&flavanoids=2.76&nonflavanoid_phenols=0.26&proanthocyanins=1.28&color_intensity=4.38&hue=1.05&od280_od315_of_diluted_wines=3.40&proline=1050"
 ```
 
 JSON **POST** example:
@@ -143,7 +142,7 @@ JSON **POST** example:
 ```bash
 curl -s -X POST http://localhost:8080/predict \
   -H "Content-Type: application/json" \
-  -d '{"sepal_length":5.1,"sepal_width":3.5,"petal_length":1.4,"petal_width":0.2}'
+    -d '{"alcohol":13.20,"malic_acid":1.78,"ash":2.14,"alcalinity_of_ash":11.2,"magnesium":100,"total_phenols":2.65,"flavanoids":2.76,"nonflavanoid_phenols":0.26,"proanthocyanins":1.28,"color_intensity":4.38,"hue":1.05,"od280_od315_of_diluted_wines":3.40,"proline":1050}'
 ```
 
 ### Verify in the browser
@@ -180,6 +179,10 @@ docker compose down
 ### Docker Build Success
 
 ![Docker Build Success Screenshot image](screenshots/docker-build-complete.png)
+
+### Docker compose build success
+
+![Docker compose build up and running successfully](screenshots/docker-compose-up-running.png)
 
 ### cURL test with JSON
 
