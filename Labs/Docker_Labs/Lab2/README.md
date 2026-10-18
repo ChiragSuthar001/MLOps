@@ -50,7 +50,7 @@ These artifacts are loaded by `src/main.py` when the prediction API starts.
 ### Train as part of the Docker build
 
 The first stage of the `dockerfile` installs the dependencies and runs
-`model_training.py` automatically. Build the image from the project root:
+`model_training.py` automatically. Build the image from the project folder `Labs/Docker_Labs/Lab2` from the root of the repo:
 
 ```bash
 docker build -t my_wine_app .
