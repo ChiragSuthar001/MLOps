@@ -58,6 +58,7 @@ The generated model, encoder, and scaler are copied into the serving stage of th
 ## Web UI (src/template/)
 
 - Used the default `predict.html` - just changed the switch to match my input to the html file.
+- A Random button that generates random data in range for each feature to test running on synthetic data.
 
 # Use of Docker
 
