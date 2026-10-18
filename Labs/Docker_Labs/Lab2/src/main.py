@@ -12,10 +12,6 @@ model  = None
 encoder = None
 scaler = None
 
-model = keras.models.load_model('my_nn_iris_model.keras')
-encoder = joblib.load('iris_encoder.pkl')
-scaler = joblib.load('iris_scaler.pkl')
-
 _inputs = ('sepal_length', 'sepal_width', 'petal_length', 'petal_width')
 
 def _getPrediction(data):
@@ -44,7 +40,7 @@ def _getPrediction(data):
 
 @app.route('/')
 def home():
-    return "Welcome to the Iris Classifier API!"
+    return "Welcome to the Wine Classifier API!"
 
 @app.route("/health")
 def health_check():
@@ -69,9 +65,9 @@ def predict():
         return "Unsupported HTTP method"
 
 if __name__ == "__main__":
-    model_file = "my_nn_iris_model.keras"
-    encoder_file = "iris_encoder.pkl"
-    scaler_file = "iris_scaler.pkl"
+    model_file = "my_nn_wine_model.keras"
+    encoder_file = "wine_encoder.pkl"
+    scaler_file = "wine_scaler.pkl"
 
     required_files = [model_file, encoder_file, scaler_file]
 

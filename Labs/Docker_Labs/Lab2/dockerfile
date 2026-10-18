@@ -15,9 +15,9 @@ FROM python:3.13 AS serving
 
 WORKDIR /app
 
-COPY --from=model_training /app/my_nn_iris_model.keras /app/
-COPY --from=model_training /app/iris_encoder.pkl /app/
-COPY --from=model_training /app/iris_scaler.pkl /app/
+COPY --from=model_training /app/my_nn_wine_model.keras /app/
+COPY --from=model_training /app/wine_encoder.pkl /app/
+COPY --from=model_training /app/wine_scaler.pkl /app/
 COPY src/main.py /app/
 COPY requirements.txt /app/
 

@@ -1,16 +1,16 @@
-# Docker Lab 2 — Iris Classifier using Tensorflow
+# Docker Lab 2 — Wine Classifier using Tensorflow
 
 This document walks you thought the changes and how to start up the project
 
 ## Training ([src/model_training.py](https://github.com/ChiragSuthar001/MLOps/blob/main/Labs/Docker_Labs/Lab2/src/model_training.py))
 
-The training script uses scikit-learn's built-in Iris dataset. It one-hot encodes the
+The training script uses scikit-learn's built-in wine dataset. It one-hot encodes the
 labels, splits the data into 80% training and 20% test data, standardizes the features,
 and trains a three-class neural network with Keras for 100 epochs.
 
 I am saving three things at the end of the model training
 
-- `Model` -> The trained model with the final weights saved as `'my_nn_iris_model.keras'`
+- `Model` -> The trained model with the final weights saved as `'my_nn_wine_model.keras'`
 - `Scaler` -> The Standard Scaler used during training to be used during inference to ensure accurate rescaling during inference.
 - `Encoder` -> The one hot encoder, so that during inference we can dynamically get the class name without relying on the same class sequence during inference. To reduce chances of error.
 
@@ -18,17 +18,21 @@ I am saving three things at the end of the model training
 
 From the project root, install the dependencies and run the training script:
 
+I am using `uv` for python env
+
 ```bash
-python3 -m pip install -r requirements.txt
-python3 src/model_training.py
+uv venv --python=3.13
+source .venv/bin/activate
+uv python pip install -r requirements.txt
+uv run src/model_training.py
 ```
 
 The script evaluates the model on the test set and writes these files to the project
 root:
 
-- `my_nn_iris_model.keras` - the trained Keras model
-- `iris_encoder.pkl` - the fitted label encoder
-- `iris_scaler.pkl` - the fitted feature scaler
+- `my_nn_wine_model.keras` - the trained Keras model
+- `wine_encoder.pkl` - the fitted label encoder
+- `wine_scaler.pkl` - the fitted feature scaler
 
 These artifacts are loaded by `src/main.py` when the prediction API starts.
 
@@ -38,14 +42,14 @@ The first stage of the `dockerfile` installs the dependencies and runs
 `model_training.py` automatically. Build the image from the project root:
 
 ```bash
-docker build -f dockerfile -t iris-classifier .
+docker build -f dockerfile -t my_wine_app .
 ```
 
 The generated model, encoder, and scaler are copied into the serving stage of the image, so no separate training command is required before starting the container, and the model works out of the box for the final container image.
 
 ## Flask API ([src/main.py](https://github.com/ChiragSuthar001/MLOps/blob/main/Labs/Docker_Labs/Lab2/src/main.py))
 
-- Loads `my_nn_iris_model.keras`, `iris_scaler.pkl` and `iris_encoder.pkl` results from the model training at start up. If any of these files are missing it would throw an exception at the start time.
+- Loads `my_nn_wine_model.keras`, `wine_scaler.pkl` and `wine_encoder.pkl` results from the model training at start up. If any of these files are missing it would throw an exception at the start time.
 - `GET /health` returns the health of the server
 - `GET /predict` with empty body returns the HTML page for browser viewing.
 - `GET /predict` with request args returns JSON response.
@@ -84,22 +88,22 @@ pushd Labs/Docker_Labs/Lab2
 ### Build the image
 
 ```bash
-docker build -t my_iris_app .
+docker build -t my_wine_app .
 ```
 First build might take a few minutes.
 
-This will build the docker image named 'my_iris_app'. You can verify the image listed in the docker desktop or with the following command:
+This will build the docker image named 'my_wine_app'. You can verify the image listed in the docker desktop or with the following command:
 ```bash
-docker image list | grep my_iris_app
+docker image list | grep my_wine_app
 ```
 
 ### Run the container with the built image
 ```bash
-docker run --rm -p <PORT>:443 my_iris_app
+docker run --rm -p <PORT>:443 my_wine_app
 ```
 `<PORT>` - Put desired port to run the application on host system.
 
-e.g. `docker run --rm -p 8080:443 my_iris_app` will run the app on `localhost:8080`
+e.g. `docker run --rm -p 8080:443 my_wine_app` will run the app on `localhost:8080`
 
 <details>
     <summary>
@@ -107,7 +111,7 @@ e.g. `docker run --rm -p 8080:443 my_iris_app` will run the app on `localhost:80
     </summary>
 
 ```bash
-docker run --rm -d --name iris -p 8080:8080 my_iris_app
+docker run --rm -d --name wine -p 8080:8080 my_wine_app
 ```
 </details>
 
