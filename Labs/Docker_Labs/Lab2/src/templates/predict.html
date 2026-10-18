@@ -296,16 +296,18 @@
                     // Update Image
                     var imageUrl = '';
                     switch (data.predicted_class) {
-                        case 'Setosa':
+                        case 'setosa':
                             imageUrl = $('#flowerImage').data('setosa');
                             break;
-                        case 'Versicolor':
+                        case 'versicolor':
                             imageUrl = $('#flowerImage').data('versicolor');
                             break;
-                        case 'Virginica':
+                        case 'virginica':
                             imageUrl = $('#flowerImage').data('virginica');
                             break;
                     }
+                    console.log("Image URL: ", imageUrl);
+
                     $('#flowerImage').attr('src', imageUrl);
 
                     // Show Result with animation
