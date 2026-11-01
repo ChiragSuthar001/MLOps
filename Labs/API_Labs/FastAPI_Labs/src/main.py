@@ -1,27 +1,45 @@
 from fastapi import FastAPI, status, HTTPException
 from pydantic import BaseModel
 from predict import predict_data
-
+from typing import Literal
 
 app = FastAPI()
 
-class IrisData(BaseModel):
+class WineData(BaseModel):
     """
-    Pydantic BaseModel representing iris flower measurements.
+    Pydantic BaseModel representing wine data.
 
     Attributes:
-        petal_length (float): The length of the iris flower's petal in centimeters.
-        sepal_length (float): The length of the iris flower's sepal in centimeters.
-        petal_width (float): The width of the iris flower's petal in centimeters.
-        sepal_width (float): The width of the iris flower's sepal in centimeters.
+        alcohol (float): The alcohol content of the wine.
+        malic_acid (float): The malic acid content of the wine.
+        ash (float): The ash content of the wine.
+        alcalinity_of_ash (float): The alcalinity of the ash in the wine.
+        magnesium (float): The magnesium content of the wine.
+        total_phenols (float): The total phenols content of the wine.
+        flavanoids (float): The flavanoids content of the wine.
+        nonflavanoid_phenols (float): The nonflavanoid phenols content of the wine.
+        proanthocyanins (float): The proanthocyanins content of the wine.
+        color_intensity (float): The color intensity of the wine.
+        hue (float): The hue of the wine.
+        od280_od315_of_diluted_wines (float): The OD280/OD315 ratio of the diluted wines.
+        proline (float): The proline content of the wine.
     """
-    petal_length: float
-    sepal_length: float
-    petal_width: float
-    sepal_width: float
+    alcohol: float
+    malic_acid: float
+    ash: float
+    alcalinity_of_ash: float
+    magnesium: float
+    total_phenols: float
+    flavanoids: float
+    nonflavanoid_phenols: float
+    proanthocyanins: float
+    color_intensity: float
+    hue: float
+    od280_od315_of_diluted_wines: float
+    proline: float
 
-class IrisResponse(BaseModel):
-    response:int
+class WineResponse(BaseModel):
+    response: Literal["Barolo", "Grignolino", "Barbera"]
 
 
 
@@ -34,42 +52,57 @@ async def health_ping():
     """Concurrent (multiple tasks can run simultaneously)"""
     return {"status": "healthy"}
 
-@app.post("/predict", response_model=IrisResponse)
-async def predict_iris(iris_features: IrisData):
+@app.post("/predict", response_model=WineResponse)
+async def predict_wine(wine_data: WineData):
     """
-    Predict the iris flower species based on provided features.
-    This endpoint accepts iris flower measurements and returns the predicted species class.
+    Predict the wine quality based on provided features.
+    This endpoint accepts wine data and returns the predicted quality.
     Args:
-        iris_features (IrisData): An IrisData object containing:
-            - sepal_length (float): Length of the sepal in cm
-            - sepal_width (float): Width of the sepal in cm
-            - petal_length (float): Length of the petal in cm
-            - petal_width (float): Width of the petal in cm
+        wine_data (WineData): A WineData object containing:
+            - alcohol (float): The alcohol content of the wine.
+            - malic_acid (float): The malic acid content of the wine.
+            - ash (float): The ash content of the wine.
+            - alcalinity_of_ash (float): The alcalinity of the ash in the wine.
+            - magnesium (float): The magnesium content of the wine.
+            - total_phenols (float): The total phenols content of the wine.
+            - flavanoids (float): The flavanoids content of the wine.
+            - nonflavanoid_phenols (float): The nonflavanoid phenols content of the wine.
+            - proanthocyanins (float): The proanthocyanins content of the wine.
+            - color_intensity (float): The color intensity of the wine.
+            - hue (float): The hue of the wine.
+            - od280_od315_of_diluted_wines (float): The OD280/OD315 ratio of the diluted wines.
+            - proline (float): The proline content of the wine.
     Returns:
-        IrisResponse: A response object containing:
-            - response (int): The predicted iris species class (0, 1, or 2)
+        WineResponse: A response object containing:
+            - response (str): The predicted wine quality.
     Raises:
         HTTPException: Returns a 500 status code with error details if prediction fails.
     Example:
         POST /predict
         {
-            "sepal_length": 5.1,
-            "sepal_width": 3.5,
-            "petal_length": 1.4,
-            "petal_width": 0.2
+            "alcohol": 12.0,
+            "malic_acid": 1.0,
+            "ash": 2.0,
+            "alcalinity_of_ash": 15.0,
+            "magnesium": 70.0,
+            "total_phenols": 2.6,
+            "flavanoids": 1.3,
+            "nonflavanoid_phenols": 0.4,
+            "proanthocyanins": 1.5,
+            "color_intensity": 4.5,
+            "hue": 12.0,
+            "od280_od315_of_diluted_wines": 3.5,
+            "proline": 350.0
         }
         Response:
         {
-            "response": 0
+            "response": "Barolo"
         }
     """
     try:
-        features = [[iris_features.sepal_length, iris_features.sepal_width,
-                    iris_features.petal_length, iris_features.petal_width]]
+        prediction = predict_data(wine_data)
+        return WineResponse(response=prediction)
 
-        prediction = predict_data(features)
-        return IrisResponse(response=int(prediction[0]))
-    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
